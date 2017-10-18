@@ -91,7 +91,12 @@ export const _ = {
 
 export const specialFilters = {
   $in (key, ins) {
-    return current => ins.indexOf(current[key]) !== -1;
+    return function(current) {
+      let founds = ins.map(function(item) {
+        return current[key].indexOf(item) !== -1;
+      });
+      return founds.indexOf(false) === -1;
+    }
   },
 
   $nin (key, nins) {
