@@ -153,7 +153,7 @@ export function matcher (originalQuery) {
 
   return function (item) {
     return _.every(query, function (value, key) {
-      if (value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+      if (value !== null && (typeof value === 'undefined' ? 'undefined' : typeof(value)) === 'object') {
         if (key == '$or') {
           return _.some(value, function (or) {
             return matcher(or)(item);
