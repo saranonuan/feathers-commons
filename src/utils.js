@@ -152,15 +152,17 @@ export function matcher (originalQuery) {
   const query = _.omit(originalQuery, '$limit', '$skip', '$sort', '$select');
 
   return function (item) {
-    if (query.$or && _.some(query.$or, or => matcher(or)(item))) {
-      return true;
-    }
+    return _.every(query, function (value, key) {
+      if (value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+        if (key == '$or') {
+          return _.some(value, function (or) {
+            return matcher(or)(item);
+          });
+        }
 
-    return _.every(query, (value, key) => {
-      if (value !== null && typeof value === 'object') {
-        return _.every(value, (target, filterType) => {
+        return _.every(value, function (target, filterType) {
           if (specialFilters[filterType]) {
-            const filter = specialFilters[filterType](key, target);
+            var filter = specialFilters[filterType](key, target);
             return filter(item);
           }
 
