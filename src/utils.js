@@ -159,6 +159,11 @@ export function matcher (originalQuery) {
             return matcher(or)(item);
           });
         }
+        if (key == '$and') {
+          return _.every(value, function (or) {
+            return matcher(or)(item);
+          });
+        }
 
         return _.every(value, function (target, filterType) {
           if (specialFilters[filterType]) {
